@@ -40,9 +40,8 @@ app.post('/api/check-card', async (req, res) => {
     }
 
     try {
-        // 2. Gateway Integration (Stripe Test Mode)
-        const paymentMethod = await stripe.paymentMethods.create({
-            type: 'card',
+        // 2. Gateway Integration using Stripe Tokens API
+        const token = await stripe.tokens.create({
             card: {
                 number: cleanCard,
                 exp_month: parseInt(cleanMm),
@@ -54,7 +53,7 @@ app.post('/api/check-card', async (req, res) => {
         return res.json({ 
             status: 'LIVE', 
             message: 'Approved (Auth Success)', 
-            id: paymentMethod.id 
+            id: token.id 
         });
 
     } catch (error) {
